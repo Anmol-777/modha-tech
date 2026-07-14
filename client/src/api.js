@@ -47,6 +47,13 @@ export function getContent(section) {
   return request(`/content/${section}`);
 }
 
+export function upsertContent(section, key, value, type = "text", label = "") {
+  return request("/admin/upsert", {
+    method: "POST",
+    body: JSON.stringify({ section, key, value, type, label }),
+  });
+}
+
 export function submitContactEnquiry(data) {
   return request("/contact", {
     method: "POST",

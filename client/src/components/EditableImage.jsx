@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAdmin } from "../context/AdminContext";
-import { updateContent, uploadImage } from "../api";
+import { updateContent, upsertContent, uploadImage } from "../api";
 
-export default function EditableImage({ contentId, src, alt, style, wrapperStyle, ...props }) {
+export default function EditableImage({ contentId, section, contentKey, src, alt, style, wrapperStyle, ...props }) {
   const { editMode } = useAdmin();
   const [imageSrc, setImageSrc] = useState(src);
   const [uploading, setUploading] = useState(false);
+  const internalId = useRef(contentId);
 
   if (!editMode) {
     return <img src={imageSrc} alt={alt} style={style} {...props} />;
@@ -17,7 +18,12 @@ export default function EditableImage({ contentId, src, alt, style, wrapperStyle
     setUploading(true);
     try {
       const result = await uploadImage(file);
-      await updateContent(contentId, result.path);
+      if (internalId.current) {
+        await updateContent(internalId.current, result.path);
+      } else if (section && contentKey) {
+        const created = await upsertContent(section, contentKey, result.path, "image");
+        internalId.current = created._id || created.id;
+      }
       setImageSrc(result.path);
     } catch {
       //

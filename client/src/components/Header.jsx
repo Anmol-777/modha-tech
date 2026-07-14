@@ -1,13 +1,30 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import EditableText from './EditableText'
+import EditableImage from './EditableImage'
 import { useAdmin } from '../context/AdminContext'
+import { getContent } from '../api'
 
 export default function Header() {
   const { t, i18n } = useTranslation()
   const { admin, editMode, setEditMode } = useAdmin()
+  const location = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [langOpen, setLangOpen] = useState(false)
+  const [content, setContent] = useState({})
+
+  useEffect(() => {
+    getContent('header').then(setContent).catch(() => {})
+  }, [])
+
+  const navItems = [
+    { to: '/', key: 'nav-home', label: t('nav.home') },
+    { to: '/products', key: 'nav-product', label: t('nav.product') },
+    { to: '/innovations', key: 'nav-innovations', label: t('nav.innovations') },
+    { to: '/about', key: 'nav-our-story', label: t('nav.ourStory') },
+    { to: '/contact', key: 'nav-contact', label: t('nav.contactUs') },
+  ]
 
   return (
     <>
@@ -31,15 +48,18 @@ export default function Header() {
           margin: '0 auto',
         }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-            <img
+            <EditableImage
+              section="header"
+              contentKey="logo-image"
               src="/images/proper logo.jpg"
               alt={t('header.logoAlt')}
               style={{ height: 34, width: 'auto', objectFit: 'contain' }}
+              wrapperStyle={{ display: 'inline-block' }}
             />
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {admin && (
+            {admin && location.pathname.startsWith('/admin') && (
               <label style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -67,10 +87,13 @@ export default function Header() {
                 style={{ display: 'flex', alignItems: 'center', padding: 0, border: 'none', background: 'none', cursor: 'pointer' }}
                 aria-label={t('header.languageSelectorAria')}
               >
-                <img
+                <EditableImage
+                  section="header"
+                  contentKey="language-image"
                   src="/images/english.jpg"
                   alt={t('header.languageLabel')}
                   style={{ height: 28, width: 'auto', objectFit: 'contain', display: 'block' }}
+                  wrapperStyle={{ display: 'inline-block' }}
                 />
               </button>
               {langOpen && (
@@ -148,11 +171,24 @@ export default function Header() {
             </div>
             <nav style={{ padding: '0 24px' }}>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <li><Link to="/" style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color: '#2E2E2E' }} onClick={() => setMenuOpen(false)}>{t('nav.home')}</Link></li>
-                <li><Link to="/products" style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color: '#2E2E2E' }} onClick={() => setMenuOpen(false)}>{t('nav.product')}</Link></li>
-                <li><Link to="/innovations" style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color: '#2E2E2E' }} onClick={() => setMenuOpen(false)}>{t('nav.innovations')}</Link></li>
-                <li><Link to="/about" style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color: '#2E2E2E' }} onClick={() => setMenuOpen(false)}>{t('nav.ourStory')}</Link></li>
-                <li><Link to="/contact" style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color: '#2E2E2E' }} onClick={() => setMenuOpen(false)}>{t('nav.contactUs')}</Link></li>
+                {navItems.map((item) => (
+                  <li key={item.key}>
+                    <Link
+                      to={item.to}
+                      style={{ fontFamily: "'DM Serif Display', serif", fontSize: 18, color: '#2E2E2E' }}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <EditableText
+                        section="header"
+                        contentKey={item.key}
+                        value={item.label}
+                        tag="span"
+                      >
+                        {item.label}
+                      </EditableText>
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>

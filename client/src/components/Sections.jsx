@@ -32,35 +32,22 @@ export function HeroSection() {
       marginTop: 64,
       overflow: 'hidden',
     }}>
-      {heroImage ? (
-        <EditableImage
-          contentId={heroImage.id}
-          src={heroImage.value}
-          alt={t('home.heroAlt')}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-          wrapperStyle={{ position: 'absolute', inset: 0 }}
-        />
-      ) : (
-        <img
-          src="/images/machine.jpg"
-          alt={t('home.heroAlt')}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center',
-          }}
-        />
-      )}
+      <EditableImage
+        contentId={heroImage?.id}
+        section="home"
+        contentKey="hero-image"
+        src={heroImage?.value || "/images/machine.jpg"}
+        alt={t('home.heroAlt')}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          objectPosition: 'center',
+        }}
+        wrapperStyle={{ position: 'absolute', inset: 0 }}
+      />
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -84,13 +71,15 @@ export function HeroSection() {
             lineHeight: 1.1,
             color: '#2E2E2E',
           }}>
-            {heading ? (
-              <EditableText contentId={heading.id} value={heading.value} tag="span">
-                {heading.value}
-              </EditableText>
-            ) : (
-              t('home.heroHeading')
-            )}
+            <EditableText
+              contentId={heading?.id}
+              section="home"
+              contentKey="hero-heading"
+              value={heading?.value || t('home.heroHeading')}
+              tag="span"
+            >
+              {heading?.value || t('home.heroHeading')}
+            </EditableText>
           </h1>
           <p style={{
             marginTop: 16,
@@ -103,9 +92,15 @@ export function HeroSection() {
                 {tagline.value}
               </EditableText>
             ) : (
-              <Trans i18nKey="home.heroText">
-                Empowering the <strong style={{ color: '#48663F' }}>hands</strong> that clothe the nation
-              </Trans>
+              <EditableText
+                section="home"
+                contentKey="hero-tagline"
+                value={t('home.heroText')}
+              >
+                <Trans i18nKey="home.heroText">
+                  Empowering the <strong style={{ color: '#48663F' }}>hands</strong> that clothe the nation
+                </Trans>
+              </EditableText>
             )}
           </p>
           <a
@@ -133,7 +128,13 @@ export function HeroSection() {
                 {cta.value}
               </EditableText>
             ) : (
-              t('home.exploreProduct')
+              <EditableText
+                section="home"
+                contentKey="hero-cta"
+                value={t('home.exploreProduct')}
+              >
+                {t('home.exploreProduct')}
+              </EditableText>
             )}
             <span style={{ fontSize: 18 }}>→</span>
           </a>
@@ -158,7 +159,13 @@ export function HeroSection() {
               {badge.value}
             </EditableText>
           ) : (
-            t('home.badge')
+            <EditableText
+              section="home"
+              contentKey="hero-badge"
+              value={t('home.badge')}
+            >
+              {t('home.badge')}
+            </EditableText>
           )}
         </span>
       </div>
@@ -192,7 +199,13 @@ export function FeaturesSection() {
               {heading.value}
             </EditableText>
           ) : (
-            t('home.keyFeatures')
+            <EditableText
+              section="home"
+              contentKey="features-heading"
+              value={t('home.keyFeatures')}
+            >
+              {t('home.keyFeatures')}
+            </EditableText>
           )}
         </h2>
         <div style={{
@@ -202,20 +215,14 @@ export function FeaturesSection() {
           overflow: 'hidden',
           boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
         }}>
-          {image ? (
-            <EditableImage
-              contentId={image.id}
-              src={image.value}
-              alt={t('home.keyFeaturesAlt')}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-          ) : (
-            <img
-              src="/images/Group 106.jpg"
-              alt={t('home.keyFeaturesAlt')}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-          )}
+          <EditableImage
+            contentId={image?.id}
+            section="home"
+            contentKey="features-image"
+            src={image?.value || "/images/Group 106.jpg"}
+            alt={t('home.keyFeaturesAlt')}
+            style={{ width: '100%', height: 'auto', display: 'block' }}
+          />
         </div>
       </div>
     </section>
@@ -248,7 +255,13 @@ export function VideoSection() {
               {heading.value}
             </EditableText>
           ) : (
-            t('home.installationVideo')
+            <EditableText
+              section="home"
+              contentKey="video-heading"
+              value={t('home.installationVideo')}
+            >
+              {t('home.installationVideo')}
+            </EditableText>
           )}
         </h2>
         <div style={{
@@ -261,21 +274,15 @@ export function VideoSection() {
           maxWidth: 800,
           margin: '0 auto',
         }}>
-          {thumbnail ? (
-            <EditableImage
-              contentId={thumbnail.id}
-              src={thumbnail.value}
-              alt={t('home.installationVideoAlt')}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-              wrapperStyle={{ position: 'absolute', inset: 0 }}
-            />
-          ) : (
-            <img
-              src="/images/Group 9.jpg"
-              alt={t('home.installationVideoAlt')}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          )}
+          <EditableImage
+            contentId={thumbnail?.id}
+            section="home"
+            contentKey="video-thumbnail"
+            src={thumbnail?.value || "/images/Group 9.jpg"}
+            alt={t('home.installationVideoAlt')}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            wrapperStyle={{ position: 'absolute', inset: 0 }}
+          />
           <div style={{
             position: 'absolute',
             inset: 0,
@@ -319,11 +326,17 @@ export function TestimonialsSection() {
 
   const testimonials = [
     {
+      quoteKey: 'testimonial-1-quote',
+      authorKey: 'testimonial-1-author',
+      imageKey: 'testimonial-1-image',
       quote: t('home.testimonial1Quote'),
       author: t('home.testimonial1Author'),
       image: "/images/Property 1=Default.jpg",
     },
     {
+      quoteKey: 'testimonial-2-quote',
+      authorKey: 'testimonial-2-author',
+      imageKey: 'testimonial-2-image',
       quote: t('home.testimonial2Quote'),
       author: t('home.testimonial2Author'),
       image: "/images/Property 1=Default-1.jpg",
@@ -351,7 +364,13 @@ export function TestimonialsSection() {
               {heading.value}
             </EditableText>
           ) : (
-            t('home.voicesFromTheLoom')
+            <EditableText
+              section="home"
+              contentKey="testimonials-heading"
+              value={t('home.voicesFromTheLoom')}
+            >
+              {t('home.voicesFromTheLoom')}
+            </EditableText>
           )}
         </h2>
         <div
@@ -378,16 +397,42 @@ export function TestimonialsSection() {
               overflow: 'hidden',
             }}>
               <div style={{ position: 'relative', width: '100%', height: 160 }}>
-                <img src={tItem.image} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                <EditableImage
+                  section="home"
+                  contentKey={tItem.imageKey}
+                  src={tItem.image}
+                  alt=""
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  wrapperStyle={{ position: 'absolute', inset: 0 }}
+                />
               </div>
               <div style={{ padding: 16 }}>
                 <p style={{ fontSize: 14, color: '#2E2E2E', lineHeight: 1.6, marginBottom: 12 }}>
-                  &ldquo;{tItem.quote}&rdquo;
+                  &ldquo;<EditableText
+                    section="home"
+                    contentKey={tItem.quoteKey}
+                    value={tItem.quote}
+                    tag="span"
+                  >{tItem.quote}</EditableText>&rdquo;
                 </p>
-                <p style={{ fontSize: 12, fontWeight: 600, color: '#48663F' }}>{tItem.author}</p>
-                <button style={{ marginTop: 8, fontSize: 12, fontWeight: 500, color: '#48663F', background: 'none', border: 'none', cursor: 'pointer' }}>
+                <EditableText
+                  section="home"
+                  contentKey={tItem.authorKey}
+                  value={tItem.author}
+                  tag="p"
+                  style={{ fontSize: 12, fontWeight: 600, color: '#48663F' }}
+                >
+                  {tItem.author}
+                </EditableText>
+                <EditableText
+                  section="home"
+                  contentKey="testimonial-read-more"
+                  value={t('home.readMore')}
+                  tag="button"
+                  style={{ marginTop: 8, fontSize: 12, fontWeight: 500, color: '#48663F', background: 'none', border: 'none', cursor: 'pointer' }}
+                >
                   {t('home.readMore')}
-                </button>
+                </EditableText>
               </div>
             </div>
           ))}
@@ -420,8 +465,8 @@ export function AwardsSection() {
   const award2 = content['awards-image-2'];
 
   const awards = [
-    { title: t('home.award1Title'), image: award1?.value || "/images/Group 134.jpg", imageId: award1?.id },
-    { title: t('home.award2Title'), image: award2?.value || "/images/Group 134.jpg", imageId: award2?.id },
+    { title: t('home.award1Title'), image: award1?.value || "/images/Group 134.jpg", imageId: award1?.id, contentKey: 'awards-image-1' },
+    { title: t('home.award2Title'), image: award2?.value || "/images/Group 134.jpg", imageId: award2?.id, contentKey: 'awards-image-2' },
   ]
 
   return (
@@ -439,7 +484,13 @@ export function AwardsSection() {
               {heading.value}
             </EditableText>
           ) : (
-            t('home.awardsAndRecognition')
+            <EditableText
+              section="home"
+              contentKey="awards-heading"
+              value={t('home.awardsAndRecognition')}
+            >
+              {t('home.awardsAndRecognition')}
+            </EditableText>
           )}
         </h2>
         <div style={{
@@ -452,21 +503,15 @@ export function AwardsSection() {
           maxWidth: 800,
           margin: '0 auto',
         }}>
-          {awards[active].imageId ? (
-            <EditableImage
-              contentId={awards[active].imageId}
-              src={awards[active].image}
-              alt={awards[active].title}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-              wrapperStyle={{ position: 'absolute', inset: 0 }}
-            />
-          ) : (
-            <img
-              src={awards[active].image}
-              alt={awards[active].title}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          )}
+          <EditableImage
+            contentId={awards[active]?.imageId}
+            section="home"
+            contentKey={awards[active]?.contentKey}
+            src={awards[active]?.image}
+            alt={awards[active]?.title}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            wrapperStyle={{ position: 'absolute', inset: 0 }}
+          />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 16 }}>
           {awards.map((_, i) => (

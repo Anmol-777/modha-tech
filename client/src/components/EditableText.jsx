@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAdmin } from "../context/AdminContext";
-import { updateContent } from "../api";
+import { updateContent, upsertContent } from "../api";
 
-export default function EditableText({ contentId, value, tag = "span", style, children, ...props }) {
+export default function EditableText({ contentId, section, contentKey, value, tag = "span", style, children, ...props }) {
   const { editMode } = useAdmin();
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(value ?? "");
   const [saving, setSaving] = useState(false);
+  const internalId = useRef(contentId);
 
   if (!editMode) {
     const Tag = tag;
@@ -16,7 +17,12 @@ export default function EditableText({ contentId, value, tag = "span", style, ch
   async function handleSave() {
     setSaving(true);
     try {
-      await updateContent(contentId, text);
+      if (internalId.current) {
+        await updateContent(internalId.current, text);
+      } else if (section && contentKey) {
+        const result = await upsertContent(section, contentKey, text);
+        internalId.current = result._id || result.id;
+      }
       setEditing(false);
     } catch {
       //

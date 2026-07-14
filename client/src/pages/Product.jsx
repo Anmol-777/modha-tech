@@ -5,18 +5,18 @@ import EditableImage from '../components/EditableImage'
 import { getContent } from '../api'
 
 const images = [
-  { src: '/images/image-14.jpg' },
-  { src: '/images/image-15.jpg' },
-  { src: '/images/image-18.jpg' },
+  { src: '/images/image-14.jpg', key: 'gallery-image-1' },
+  { src: '/images/image-15.jpg', key: 'gallery-image-2' },
+  { src: '/images/image-18.jpg', key: 'gallery-image-3' },
 ]
 
 const techSpecKeys = [
-  { labelKey: 'specDimensions', valueKey: 'specDimensionsVal' },
-  { labelKey: 'specMotor', valueKey: 'specMotorVal' },
-  { labelKey: 'specPower', valueKey: 'specPowerVal' },
-  { labelKey: 'specBuild', valueKey: 'specBuildVal' },
-  { labelKey: 'specBackup', valueKey: 'specBackupVal' },
-  { labelKey: 'specMaintenance', valueKey: 'specMaintenanceVal' },
+  { labelKey: 'specDimensions', valueKey: 'specDimensionsVal', contentKey: 'spec-dimensions' },
+  { labelKey: 'specMotor', valueKey: 'specMotorVal', contentKey: 'spec-motor' },
+  { labelKey: 'specPower', valueKey: 'specPowerVal', contentKey: 'spec-power' },
+  { labelKey: 'specBuild', valueKey: 'specBuildVal', contentKey: 'spec-build' },
+  { labelKey: 'specBackup', valueKey: 'specBackupVal', contentKey: 'spec-backup' },
+  { labelKey: 'specMaintenance', valueKey: 'specMaintenanceVal', contentKey: 'spec-maintenance' },
 ]
 
 function useContent(section) {
@@ -34,28 +34,6 @@ export default function Product() {
   const content = useContent('product')
   const homeContent = useContent('home')
 
-  const features = [
-    t('product.feature1'),
-    t('product.feature2'),
-    t('product.feature3'),
-    t('product.feature4'),
-    t('product.feature5'),
-    t('product.feature6'),
-  ]
-
-  const testimonials = [
-    {
-      quote: t('home.testimonial1Quote'),
-      author: t('home.testimonial1Author'),
-      image: "/images/Property 1=Default.jpg",
-    },
-    {
-      quote: t('home.testimonial2Quote'),
-      author: t('home.testimonial2Author'),
-      image: "/images/Property 1=Default-1.jpg",
-    },
-  ]
-
   const productName = content['name'];
   const productDesc = content['description'];
   const videoHeading = content['video-heading'] || homeContent['video-heading'];
@@ -65,10 +43,13 @@ export default function Product() {
     <main style={{ paddingTop: 64 }}>
       {/* Hero Image */}
       <div style={{ position: 'relative', width: '100%', height: 320, overflow: 'hidden' }}>
-        <img
+        <EditableImage
+          section="product"
+          contentKey={images[activeImage].key}
           src={images[activeImage].src}
           alt={t('product.imageAlt')}
           style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+          wrapperStyle={{ position: 'absolute', inset: 0 }}
         />
       </div>
 
@@ -95,10 +76,13 @@ export default function Product() {
               transition: 'border 0.2s',
             }}
           >
-            <img
+            <EditableImage
+              section="product"
+              contentKey={img.key}
               src={img.src}
               alt={[t('product.galleryMain'), t('product.galleryView2'), t('product.galleryView3')][i]}
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              wrapperStyle={{ width: '100%', height: '100%' }}
             />
           </button>
         ))}
@@ -112,23 +96,25 @@ export default function Product() {
           color: '#48663F',
           lineHeight: 1.2,
         }}>
-          {productName ? (
-            <EditableText contentId={productName.id} value={productName.value}>
-              {productName.value}
-            </EditableText>
-          ) : (
-            <>{t('product.heading1')}<br />{t('product.heading2')}</>
-          )}
+          <EditableText
+            contentId={productName?.id}
+            section="product"
+            contentKey="name"
+            value={productName?.value || `${t('product.heading1')} ${t('product.heading2')}`}
+          >
+            {productName?.value || `${t('product.heading1')} ${t('product.heading2')}`}
+          </EditableText>
         </h1>
 
         <p style={{ marginTop: 12, fontSize: 14, color: '#2E2E2E', lineHeight: 1.6 }}>
-          {productDesc ? (
-            <EditableText contentId={productDesc.id} value={productDesc.value}>
-              {productDesc.value}
-            </EditableText>
-          ) : (
-            'Modha Pedal Operation Machine is designed to improve the comfort and efficiency of traditional handloom weaving.'
-          )}
+          <EditableText
+            contentId={productDesc?.id}
+            section="product"
+            contentKey="description"
+            value={productDesc?.value || 'Modha Pedal Operation Machine is designed to improve the comfort and efficiency of traditional handloom weaving.'}
+          >
+            {productDesc?.value || 'Modha Pedal Operation Machine is designed to improve the comfort and efficiency of traditional handloom weaving.'}
+          </EditableText>
         </p>
 
         {/* Rating */}
@@ -157,7 +143,14 @@ export default function Product() {
               transition: 'all 0.2s',
             }}
           >
-            {t('product.tabDescription')}
+            <EditableText
+              section="product"
+              contentKey="tab-description"
+              value={t('product.tabDescription')}
+              tag="span"
+            >
+              {t('product.tabDescription')}
+            </EditableText>
           </button>
           <button
             onClick={() => setActiveTab('specs')}
@@ -175,7 +168,14 @@ export default function Product() {
               transition: 'all 0.2s',
             }}
           >
-            {t('product.tabSpecs')}
+            <EditableText
+              section="product"
+              contentKey="tab-specs"
+              value={t('product.tabSpecs')}
+              tag="span"
+            >
+              {t('product.tabSpecs')}
+            </EditableText>
           </button>
         </div>
 
@@ -183,12 +183,37 @@ export default function Product() {
         <div style={{ marginTop: 20 }}>
           {activeTab === 'description' ? (
             <div>
-              <p style={{ fontSize: 14, color: '#2E2E2E', lineHeight: 1.7, marginBottom: 20 }}>
+              <EditableText
+                section="product"
+                contentKey="description-content"
+                value={t('product.description')}
+                tag="p"
+                style={{ fontSize: 14, color: '#2E2E2E', lineHeight: 1.7, marginBottom: 20 }}
+              >
                 {t('product.description')}
-              </p>
-              <h3 style={{ fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 600, color: '#48663F', marginBottom: 12 }}>{t('product.keyFeatures')}</h3>
+              </EditableText>
+              <EditableText
+                section="product"
+                contentKey="key-features-heading"
+                value={t('product.keyFeatures')}
+                tag="h3"
+                style={{ fontFamily: "'Poppins', sans-serif", fontSize: 16, fontWeight: 600, color: '#48663F', marginBottom: 12 }}
+              >
+                {t('product.keyFeatures')}
+              </EditableText>
               <ul style={{ paddingLeft: 20, fontSize: 14, color: '#2E2E2E', lineHeight: 2 }}>
-                {features.map((f, i) => <li key={i}>{f}</li>)}
+                {[1,2,3,4,5,6].map((n) => (
+                  <li key={n}>
+                    <EditableText
+                      section="product"
+                      contentKey={`feature-${n}`}
+                      value={t(`product.feature${n}`)}
+                      tag="span"
+                    >
+                      {t(`product.feature${n}`)}
+                    </EditableText>
+                  </li>
+                ))}
               </ul>
             </div>
           ) : (
@@ -200,8 +225,24 @@ export default function Product() {
                   borderRadius: 12,
                   padding: 16,
                 }}>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: '#48663F', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}>{t('product.' + spec.labelKey)}</p>
-                  <p style={{ fontSize: 13, color: '#2E2E2E', lineHeight: 1.4 }}>{t('product.' + spec.valueKey)}</p>
+                  <EditableText
+                    section="product"
+                    contentKey={`${spec.contentKey}-label`}
+                    value={t(`product.${spec.labelKey}`)}
+                    tag="p"
+                    style={{ fontSize: 11, fontWeight: 600, color: '#48663F', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 4 }}
+                  >
+                    {t(`product.${spec.labelKey}`)}
+                  </EditableText>
+                  <EditableText
+                    section="product"
+                    contentKey={`${spec.contentKey}-value`}
+                    value={t(`product.${spec.valueKey}`)}
+                    tag="p"
+                    style={{ fontSize: 13, color: '#2E2E2E', lineHeight: 1.4 }}
+                  >
+                    {t(`product.${spec.valueKey}`)}
+                  </EditableText>
                 </div>
               ))}
             </div>
@@ -223,23 +264,30 @@ export default function Product() {
             color: '#fff',
             textAlign: 'center',
           }}>
-            {videoHeading ? (
-              <EditableText contentId={videoHeading.id} value={videoHeading.value}>
-                {videoHeading.value}
-              </EditableText>
-            ) : (
-              t('product.howToInstall')
-            )}
+            <EditableText
+              contentId={videoHeading?.id}
+              section="product"
+              contentKey="video-heading"
+              value={videoHeading?.value || t('product.howToInstall')}
+            >
+              {videoHeading?.value || t('product.howToInstall')}
+            </EditableText>
           </h2>
-          <p style={{
-            fontSize: 14,
-            color: '#999',
-            textAlign: 'center',
-            marginTop: 8,
-            marginBottom: 20,
-          }}>
+          <EditableText
+            section="product"
+            contentKey="watch-to-install"
+            value={t('product.watchToInstall')}
+            tag="p"
+            style={{
+              fontSize: 14,
+              color: '#999',
+              textAlign: 'center',
+              marginTop: 8,
+              marginBottom: 20,
+            }}
+          >
             {t('product.watchToInstall')}
-          </p>
+          </EditableText>
           <div style={{
             position: 'relative',
             width: '100%',
@@ -248,21 +296,15 @@ export default function Product() {
             overflow: 'hidden',
             boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
           }}>
-            {videoThumb ? (
-              <EditableImage
-                contentId={videoThumb.id}
-                src={videoThumb.value}
-                alt={t('product.installVideoAlt')}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-                wrapperStyle={{ position: 'absolute', inset: 0 }}
-              />
-            ) : (
-              <img
-                src="/images/Group 9.jpg"
-                alt={t('product.installVideoAlt')}
-                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            )}
+            <EditableImage
+              contentId={videoThumb?.id}
+              section="product"
+              contentKey="video-thumbnail"
+              src={videoThumb?.value || "/images/Group 9.jpg"}
+              alt={t('product.installVideoAlt')}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+              wrapperStyle={{ position: 'absolute', inset: 0 }}
+            />
             <div style={{
               position: 'absolute',
               inset: 0,
@@ -301,7 +343,13 @@ export default function Product() {
             color: '#48663F',
             marginBottom: 24,
           }}>
-            {t('product.voicesFromTheLoom')}
+            <EditableText
+              section="product"
+              contentKey="testimonials-heading"
+              value={t('product.voicesFromTheLoom')}
+            >
+              {t('product.voicesFromTheLoom')}
+            </EditableText>
           </h2>
           <div style={{
             display: 'flex',
@@ -310,8 +358,8 @@ export default function Product() {
             margin: '0 -16px',
             padding: '0 16px',
           }} className="scrollbar-hide">
-            {testimonials.map((t, i) => (
-              <div key={i} style={{
+            {[1,2].map((n) => (
+              <div key={n} style={{
                 flex: '0 0 300px',
                 borderRadius: 18,
                 background: '#fff',
@@ -320,16 +368,42 @@ export default function Product() {
                 overflow: 'hidden',
               }}>
                 <div style={{ position: 'relative', width: '100%', height: 160 }}>
-                  <img src={t.image} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <EditableImage
+                    section="product"
+                    contentKey={`testimonial-${n}-image`}
+                    src={`/images/Property 1=Default${n === 2 ? '-1' : ''}.jpg`}
+                    alt=""
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                    wrapperStyle={{ position: 'absolute', inset: 0 }}
+                  />
                 </div>
                 <div style={{ padding: 16 }}>
                   <p style={{ fontSize: 14, color: '#2E2E2E', lineHeight: 1.6, marginBottom: 12 }}>
-                    &ldquo;{t.quote}&rdquo;
+                    &ldquo;<EditableText
+                      section="product"
+                      contentKey={`testimonial-${n}-quote`}
+                      value={t(`home.testimonial${n}Quote`)}
+                      tag="span"
+                    >{t(`home.testimonial${n}Quote`)}</EditableText>&rdquo;
                   </p>
-                  <p style={{ fontSize: 12, fontWeight: 600, color: '#48663F' }}>{t.author}</p>
-                  <button style={{ marginTop: 8, fontSize: 12, fontWeight: 500, color: '#48663F', background: 'none', border: 'none', cursor: 'pointer' }}>
+                  <EditableText
+                    section="product"
+                    contentKey={`testimonial-${n}-author`}
+                    value={t(`home.testimonial${n}Author`)}
+                    tag="p"
+                    style={{ fontSize: 12, fontWeight: 600, color: '#48663F' }}
+                  >
+                    {t(`home.testimonial${n}Author`)}
+                  </EditableText>
+                  <EditableText
+                    section="product"
+                    contentKey="testimonial-read-more"
+                    value="Read more →"
+                    tag="button"
+                    style={{ marginTop: 8, fontSize: 12, fontWeight: 500, color: '#48663F', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
                     Read more →
-                  </button>
+                  </EditableText>
                 </div>
               </div>
             ))}

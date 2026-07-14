@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import EditableText from '../components/EditableText'
+import EditableImage from '../components/EditableImage'
 import { getContent, submitContactEnquiry } from '../api'
 
 function useContent(section) {
@@ -70,29 +71,42 @@ export default function Contact() {
               lineHeight: 1.15,
               marginBottom: 8,
             }}>
-              {heading ? (
-                <EditableText contentId={heading.id} value={heading.value} tag="span">
-                  {heading.value}
-                </EditableText>
-              ) : (
-                <>How can<br />we help ?</>
-              )}
+              <EditableText
+                contentId={heading?.id}
+                section="contact"
+                contentKey="heading"
+                value={heading?.value || 'How can we help ?'}
+              >
+                {heading?.value || 'How can we help ?'}
+              </EditableText>
             </h1>
-            <p style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 14,
-              color: 'rgba(255,255,255,0.8)',
-              marginBottom: 4,
-            }}>
+            <EditableText
+              section="contact"
+              contentKey="contact-subtext"
+              value="Contact us"
+              tag="p"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 14,
+                color: 'rgba(255,255,255,0.8)',
+                marginBottom: 4,
+              }}
+            >
               Contact us
-            </p>
-            <p style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 13,
-              color: 'rgba(255,255,255,0.6)',
-            }}>
+            </EditableText>
+            <EditableText
+              section="contact"
+              contentKey="address"
+              value="Hyderabad, Telangana"
+              tag="p"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 13,
+                color: 'rgba(255,255,255,0.6)',
+              }}
+            >
               Hyderabad, Telangana
-            </p>
+            </EditableText>
           </div>
 
           {/* Call Button */}
@@ -118,13 +132,14 @@ export default function Contact() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="#48663F">
               <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z" />
             </svg>
-            {phone ? (
-              <EditableText contentId={phone.id} value={phone.value}>
-                {phone.value}
-              </EditableText>
-            ) : (
-              '+91 81438 24009'
-            )}
+            <EditableText
+              contentId={phone?.id}
+              section="contact"
+              contentKey="phone"
+              value={phone?.value || '+91 81438 24009'}
+            >
+              {phone?.value || '+91 81438 24009'}
+            </EditableText>
           </a>
 
           {/* WhatsApp Button */}
@@ -149,12 +164,22 @@ export default function Contact() {
               textDecoration: 'none',
             }}
           >
-            <img
+            <EditableImage
+              section="contact"
+              contentKey="whatsapp-icon"
               src="/images/chat.jpg"
               alt="WhatsApp"
               style={{ width: 20, height: 20, objectFit: 'contain', display: 'block' }}
+              wrapperStyle={{ width: 20, height: 20, display: 'inline-block' }}
             />
-            Message on whatsapp
+            <EditableText
+              section="contact"
+              contentKey="whatsapp-text"
+              value="Message on whatsapp"
+              tag="span"
+            >
+              Message on whatsapp
+            </EditableText>
           </a>
 
           {/* Divider */}
@@ -165,47 +190,72 @@ export default function Contact() {
             marginBottom: 28,
           }}>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.2)' }} />
-            <span style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: 12,
-              color: 'rgba(255,255,255,0.5)',
-              textTransform: 'uppercase',
-              letterSpacing: 1,
-            }}>
+            <EditableText
+              section="contact"
+              contentKey="divider-or"
+              value="or"
+              tag="span"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.5)',
+                textTransform: 'uppercase',
+                letterSpacing: 1,
+              }}
+            >
               or
-            </span>
+            </EditableText>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.2)' }} />
           </div>
 
           {/* Enquiry Form Heading */}
-          <h2 style={{
-            fontFamily: "'DM Serif Display', serif",
-            fontSize: 20,
-            fontWeight: 400,
-            textAlign: 'center',
-            marginBottom: 18,
-          }}>
+          <EditableText
+            section="contact"
+            contentKey="enquiry-heading"
+            value="Enquiry Form"
+            tag="h2"
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: 20,
+              fontWeight: 400,
+              textAlign: 'center',
+              marginBottom: 18,
+            }}
+          >
             Enquiry Form
-          </h2>
+          </EditableText>
 
           {submitted ? (
             <div style={{
               textAlign: 'center',
               padding: '24px 0',
             }}>
-              <p style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: 15,
-                color: '#fff',
-                lineHeight: 1.6,
-              }}>
+              <EditableText
+                section="contact"
+                contentKey="thank-you-text"
+                value="Thank you! We'll contact you soon."
+                tag="p"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: 15,
+                  color: '#fff',
+                  lineHeight: 1.6,
+                }}
+              >
                 Thank you! We'll contact you soon.
-              </p>
+              </EditableText>
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
               {/* Full Name */}
               <div style={{ marginBottom: 18 }}>
+                <EditableText
+                  section="contact"
+                  contentKey="form-name-placeholder"
+                  value="Full Name"
+                  tag="span"
+                  style={{ display: 'none' }}
+                />
                 <input
                   type="text"
                   placeholder="Full Name"
@@ -225,20 +275,33 @@ export default function Contact() {
                   }}
                 />
                 {errors.name && (
-                  <p style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 11,
-                    color: '#ffcccc',
-                    marginTop: 4,
-                    marginLeft: 16,
-                  }}>
+                  <EditableText
+                    section="contact"
+                    contentKey="error-name"
+                    value="Please enter your name"
+                    tag="p"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 11,
+                      color: '#ffcccc',
+                      marginTop: 4,
+                      marginLeft: 16,
+                    }}
+                  >
                     Please enter your name
-                  </p>
+                  </EditableText>
                 )}
               </div>
 
               {/* City */}
               <div style={{ marginBottom: 18 }}>
+                <EditableText
+                  section="contact"
+                  contentKey="form-city-placeholder"
+                  value="City"
+                  tag="span"
+                  style={{ display: 'none' }}
+                />
                 <input
                   type="text"
                   placeholder="City"
@@ -258,20 +321,33 @@ export default function Contact() {
                   }}
                 />
                 {errors.city && (
-                  <p style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 11,
-                    color: '#ffcccc',
-                    marginTop: 4,
-                    marginLeft: 16,
-                  }}>
+                  <EditableText
+                    section="contact"
+                    contentKey="error-city"
+                    value="Please enter your city"
+                    tag="p"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 11,
+                      color: '#ffcccc',
+                      marginTop: 4,
+                      marginLeft: 16,
+                    }}
+                  >
                     Please enter your city
-                  </p>
+                  </EditableText>
                 )}
               </div>
 
               {/* Problem */}
               <div style={{ marginBottom: 24 }}>
+                <EditableText
+                  section="contact"
+                  contentKey="form-problem-placeholder"
+                  value="Problem"
+                  tag="span"
+                  style={{ display: 'none' }}
+                />
                 <input
                   type="text"
                   placeholder="Problem"
@@ -291,15 +367,21 @@ export default function Contact() {
                   }}
                 />
                 {errors.problem && (
-                  <p style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 11,
-                    color: '#ffcccc',
-                    marginTop: 4,
-                    marginLeft: 16,
-                  }}>
+                  <EditableText
+                    section="contact"
+                    contentKey="error-problem"
+                    value="Please describe your problem"
+                    tag="p"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: 11,
+                      color: '#ffcccc',
+                      marginTop: 4,
+                      marginLeft: 16,
+                    }}
+                  >
                     Please describe your problem
-                  </p>
+                  </EditableText>
                 )}
               </div>
 
@@ -315,7 +397,11 @@ export default function Contact() {
                     {submitError}
                   </p>
                 )}
-                <button
+                <EditableText
+                  section="contact"
+                  contentKey="submit-text"
+                  value="Submit"
+                  tag="button"
                   type="submit"
                   disabled={busy}
                   style={{
@@ -329,13 +415,35 @@ export default function Contact() {
                     fontSize: 15,
                     fontWeight: 600,
                     cursor: busy ? 'not-allowed' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   {busy ? 'Submitting...' : 'Submit'}
-                </button>
+                </EditableText>
               </div>
             </form>
           )}
+          {/* Developer Credits */}
+          <div style={{
+            textAlign: 'center',
+            marginTop: 28,
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.5)',
+            fontFamily: "'Inter', sans-serif",
+            lineHeight: 1.8,
+          }}>
+            <a href="https://github.com/gouthamx67" target="_blank" rel="noopener noreferrer"
+              style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>
+              Goutham
+            </a>
+            {' '}&{' '}
+            <a href="https://github.com/Anmol-777" target="_blank" rel="noopener noreferrer"
+              style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>
+              Anmol
+            </a>
+          </div>
         </div>
       </div>
     </main>

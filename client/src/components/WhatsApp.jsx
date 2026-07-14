@@ -1,3 +1,5 @@
+import EditableImage from './EditableImage'
+
 export default function WhatsApp() {
   return (
     <a
@@ -23,7 +25,14 @@ export default function WhatsApp() {
       onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
       aria-label="Contact on WhatsApp"
     >
-      <img src="/images/Group 58.jpg" alt="WhatsApp" style={{ width: 30, height: 30, objectFit: 'contain' }} />
+      <EditableImage
+        section="global"
+        contentKey="whatsapp-icon"
+        src="/images/Group 58.jpg"
+        alt="WhatsApp"
+        style={{ width: 30, height: 30, objectFit: 'contain' }}
+        wrapperStyle={{ width: 30, height: 30 }}
+      />
     </a>
   )
 }

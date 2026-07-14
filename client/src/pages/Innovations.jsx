@@ -10,6 +10,7 @@ const innovations = [
     description: 'Modha Jacquard Machine is designed to improve the efficiency and precision of traditional handloom weaving. It upgrades the existing jacquard system with a digital mechanism, replacing manual punch cards with an easy-to-use USB-based design process.',
     status: 'Pending',
     image: '/images/blue machine.jpg',
+    keyPrefix: 'innovation-1',
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const innovations = [
     description: 'Modha Pedal Operation Machine is designed to improve the comfort and efficiency of traditional handloom weaving. It upgrades the existing pedal system with a smoother and more responsive mechanism, reducing the physical effort required.',
     status: 'Patented',
     image: '/images/cycle machine.jpg',
+    keyPrefix: 'innovation-2',
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ const innovations = [
     description: 'An innovative waste management solution designed for handloom communities, turning discarded materials into useful products while promoting sustainability and cleanliness in weaving clusters.',
     status: 'Patented',
     image: '/images/garbage container.jpg',
+    keyPrefix: 'innovation-3',
   },
   {
     id: 4,
@@ -31,6 +34,7 @@ const innovations = [
     description: 'A safety device designed to protect weavers from injuries during the weaving process. Raksha ensures that the weaver can work without fear of accidents, improving both safety and productivity.',
     status: 'Patented',
     image: '/images/raksha.jpg',
+    keyPrefix: 'innovation-4',
   },
 ]
 
@@ -60,21 +64,15 @@ export default function Innovations() {
     <main style={{ paddingTop: 64 }}>
       {/* Hero */}
       <div style={{ position: 'relative', width: '100%', height: 320, overflow: 'hidden' }}>
-        {heroImage ? (
-          <EditableImage
-            contentId={heroImage.id}
-            src={heroImage.value}
-            alt="Innovations"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-            wrapperStyle={{ position: 'absolute', inset: 0 }}
-          />
-        ) : (
-          <img
-            src="/images/face.jpg"
-            alt="Innovations"
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
-          />
-        )}
+        <EditableImage
+          contentId={heroImage?.id}
+          section="innovations"
+          contentKey="hero-image"
+          src={heroImage?.value || "/images/face.jpg"}
+          alt="Innovations"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+          wrapperStyle={{ position: 'absolute', inset: 0 }}
+        />
         <div style={{
           position: 'absolute',
           bottom: 20,
@@ -88,17 +86,14 @@ export default function Innovations() {
             lineHeight: 1.15,
             textShadow: '0 2px 8px rgba(0,0,0,0.3)',
           }}>
-            {heroHeading ? (
-              <EditableText contentId={heroHeading.id} value={heroHeading.value}>
-                {heroHeading.value}
-              </EditableText>
-            ) : (
-              <>
-                Beyond The
-                <br />
-                Flagship
-              </>
-            )}
+            <EditableText
+              contentId={heroHeading?.id}
+              section="innovations"
+              contentKey="hero-heading"
+              value={heroHeading?.value || 'Beyond The Flagship'}
+            >
+              {heroHeading?.value || 'Beyond The Flagship'}
+            </EditableText>
           </h1>
         </div>
       </div>
@@ -122,7 +117,14 @@ export default function Innovations() {
               transition: 'all 0.2s',
             }}
           >
-            {f}
+            <EditableText
+              section="innovations"
+              contentKey={`filter-${f.toLowerCase()}`}
+              value={f}
+              tag="span"
+            >
+              {f}
+            </EditableText>
           </button>
         ))}
       </div>
@@ -148,10 +150,13 @@ export default function Innovations() {
               borderRadius: 16,
               overflow: 'hidden',
             }}>
-              <img
+              <EditableImage
+                section="innovations"
+                contentKey={`${card.keyPrefix}-image`}
                 src={card.image}
                 alt={card.title}
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                wrapperStyle={{ width: '100%', height: '100%' }}
               />
             </div>
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -163,7 +168,14 @@ export default function Innovations() {
                   color: '#48663F',
                   marginBottom: 4,
                 }}>
-                  {card.title}
+                  <EditableText
+                    section="innovations"
+                    contentKey={`${card.keyPrefix}-title`}
+                    value={card.title}
+                    tag="span"
+                  >
+                    {card.title}
+                  </EditableText>
                 </h3>
                 <p style={{
                   fontSize: 12,
@@ -174,7 +186,14 @@ export default function Innovations() {
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
                 }}>
-                  {card.description}
+                  <EditableText
+                    section="innovations"
+                    contentKey={`${card.keyPrefix}-desc`}
+                    value={card.description}
+                    tag="span"
+                  >
+                    {card.description}
+                  </EditableText>
                 </p>
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -188,7 +207,14 @@ export default function Innovations() {
                   fontWeight: 600,
                   fontFamily: "'Poppins', sans-serif",
                 }}>
-                  {card.status}
+                  <EditableText
+                    section="innovations"
+                    contentKey={`${card.keyPrefix}-status`}
+                    value={card.status}
+                    tag="span"
+                  >
+                    {card.status}
+                  </EditableText>
                 </span>
               </div>
             </div>
